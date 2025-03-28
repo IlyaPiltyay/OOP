@@ -1,6 +1,8 @@
 import pytest
 
+
 from src.Product_OOP import Category, Product
+
 
 
 # Фикстуры для продуктов
@@ -10,12 +12,12 @@ def product_samsung() -> Product:
 
 
 @pytest.fixture
-def product_iphone() -> Product:  # Исправлено с i на i
+def product_iphone() -> Product: 
     return Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
 
 
 @pytest.fixture
-def product_xiaomi() -> Product:  # Исправлено с X на x
+def product_xiaomi() -> Product:  
     return Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
 
 
