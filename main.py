@@ -5,13 +5,13 @@ class Product:
     def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
         self.name = name
         self.description = description
-        self._price = price  # Приватный атрибут для хранения цены
+        self.__price = price  # Приватный атрибут для хранения цены
         self.quantity = quantity
 
     @property
     def price(self) -> float:
         """Геттер для получения цены продукта."""
-        return self._price
+        return self.__price
 
     @price.setter
     def price(self, value: float) -> None:
@@ -19,7 +19,7 @@ class Product:
         if value <= 0:
             print("Цена не должна быть нулевая или отрицательная")
         else:
-            self._price = value  # Сохраняем новое значение
+            self.__price = value  # Сохраняем новое значение
 
     @classmethod
     def new_product(cls, product_info: Dict[str, Any]) -> "Product":
@@ -38,25 +38,25 @@ class Category:
     def __init__(self, name: str, description: str, products: list) -> None:
         self.name = name
         self.description = description
-        self._products = products  # Приватный атрибут для хранения списка продуктов
+        self.__products = products  # Приватный атрибут для хранения списка продуктов
         Category.category_count += 1
 
     def add_product(self, product: Product) -> None:
         if isinstance(product, Product):
-            self._products.append(product)
+            self.__products.append(product)
         else:
             raise ValueError("Требуется объект класса Product")
 
     @property
     def products(self) -> List[Product]:
-        return self._products
+        return self.__products
 
     @property
     def product_list(self) -> List[str]:
-        return [
-            f"{product.name}, {product.price:.2f} руб. Остаток: {product.quantity} шт." for product in self._products
-        ]
-
+        total_products = []
+        for product in self.__products:
+            total_products.append(f"{product.name}, {product.price:.2f} руб. Остаток: {product.quantity} шт.")
+        return total_products
 
 if __name__ == "__main__":
     product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
