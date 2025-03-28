@@ -1,7 +1,6 @@
 import pytest
 
-from src.Product_OOP import (  # Убедитесь, что импорт совпадает с вашим именем файла
-    Category, Product)
+from src.Product_OOP import Category, Product
 
 
 # Фикстуры для продуктов
@@ -74,20 +73,35 @@ def test_category_initialization(category_smartphones: Category, category_tv: Ca
     assert len(category_tv.products) == 1
 
 
-def test_category_count() -> None:
-    Category.category_count = 0
-    Category.product_count = 0
-    product1 = Product("Test Product 1", "Testing product", 100.0, 1)
-    product2 = Product("Test Product 2", "Testing product", 100.0, 1)
-    category = Category("Test Category", "Testing category", [product1, product2])
-    assert category.category_count == 1
-    assert category.product_count == 2
+def test_category_count(category_smartphones: Category) -> None:
+    assert Category.category_count == 3
 
 
-def test_category_product_count_with_multiple_categories() -> None:
-    Category.category_count = 0
-    Category.product_count = 0
-    product1 = Product("Product 1", "Test product 1", 100.0, 1)
-    category1 = Category("Category 1", "Test category 1", [product1])
-    assert category1.category_count == 1
-    assert category1.product_count == 1
+def test_add_product_to_category(category_smartphones: Category) -> None:
+    new_product = Product("Xiaomi Mi 10", "128GB, черный", 30000.0, 10)
+    category_smartphones.add_product(new_product)
+    assert len(category_smartphones.products) == 4
+
+
+def test_invalid_category_product_count() -> None:
+    """Проверяет, что добавление не Product приводит к ValueError."""
+    category = Category("Тестовая категория", "Описание тестовой категории", [])
+
+    # Пробуем вызвать метод добавления и перехватываем исключение
+    raised_exception = False
+    try:
+        category.add_product(None)  # Передаем None вместо продукта
+    except ValueError as e:
+        raised_exception = True
+        assert str(e) == "Требуется объект класса Product"
+
+    assert raised_exception, "Ожидалось, что возникнет ValueError"
+
+
+def test_category_product_list(category_smartphones: Category) -> None:
+    expected_list = [
+        "Samsung Galaxy S23 Ultra, 180000.00 руб. Остаток: 5 шт.",
+        "Iphone 15, 210000.00 руб. Остаток: 8 шт.",
+        "Xiaomi Redmi Note 11, 31000.00 руб. Остаток: 14 шт.",
+    ]
+    assert category_smartphones.product_list == expected_list
